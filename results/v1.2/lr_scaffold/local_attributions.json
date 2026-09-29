@@ -1,0 +1,466 @@
+[
+  {
+    "partition_row": 0,
+    "true_label": 1,
+    "base_value": -0.33806653877453474,
+    "model_output": 2.718094461342358,
+    "top_local_bits": [
+      {
+        "bit_index": 1027,
+        "value": 1.0177699997208771,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 774,
+        "value": 1.006350837939871,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1243,
+        "value": 0.7723742328865897,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 126,
+        "value": 0.7239378513758786,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1475,
+        "value": 0.6715078859811182,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 17,
+        "value": 0.6056772886142022,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 159,
+        "value": 0.41249025490755914,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1152,
+        "value": 0.358770400035912,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 2,
+        "value": 0.3563805386174499,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1,
+        "value": -0.29465240904173695,
+        "fingerprint_bit": 0
+      }
+    ]
+  },
+  {
+    "partition_row": 1,
+    "true_label": 1,
+    "base_value": -0.33806653877453474,
+    "model_output": 1.0067310241571539,
+    "top_local_bits": [
+      {
+        "bit_index": 739,
+        "value": 0.9954980878295178,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1951,
+        "value": 0.9647136791290795,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1794,
+        "value": 0.7101347098985208,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1102,
+        "value": 0.5734126700705806,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 319,
+        "value": -0.524889163829933,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1953,
+        "value": -0.5095886413598019,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1396,
+        "value": 0.48064365143121673,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 79,
+        "value": 0.4748838508360892,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 389,
+        "value": -0.46580380076903416,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1563,
+        "value": 0.46005106018620745,
+        "fingerprint_bit": 1
+      }
+    ]
+  },
+  {
+    "partition_row": 2,
+    "true_label": 0,
+    "base_value": -0.33806653877453474,
+    "model_output": 1.8582239917774173,
+    "top_local_bits": [
+      {
+        "bit_index": 1930,
+        "value": 1.1538374329996082,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1053,
+        "value": -0.6189173412079476,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1037,
+        "value": -0.6147099110013527,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1866,
+        "value": -0.5595507808663579,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 351,
+        "value": 0.5419432331218736,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1160,
+        "value": 0.5377241299002362,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 102,
+        "value": 0.5190946873537143,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 623,
+        "value": 0.4951341549137637,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1810,
+        "value": 0.4390642987364705,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1096,
+        "value": 0.38965277006102406,
+        "fingerprint_bit": 1
+      }
+    ]
+  },
+  {
+    "partition_row": 3,
+    "true_label": 0,
+    "base_value": -0.33806653877453474,
+    "model_output": -2.4129603080091964,
+    "top_local_bits": [
+      {
+        "bit_index": 1065,
+        "value": -0.8509389435054161,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 231,
+        "value": -0.562724832625285,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 33,
+        "value": 0.5569021043667244,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 79,
+        "value": 0.4748838508360892,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 389,
+        "value": -0.46580380076903416,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 342,
+        "value": 0.45483033486274715,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 720,
+        "value": -0.4256638093512323,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 159,
+        "value": 0.41249025490755914,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 147,
+        "value": 0.4092960692916589,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 802,
+        "value": -0.4084243445336389,
+        "fingerprint_bit": 1
+      }
+    ]
+  },
+  {
+    "partition_row": 4,
+    "true_label": 1,
+    "base_value": -0.33806653877453474,
+    "model_output": -5.328882471492066,
+    "top_local_bits": [
+      {
+        "bit_index": 1998,
+        "value": -0.7198957286761648,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1053,
+        "value": -0.6189173412079476,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 871,
+        "value": -0.6049261007732157,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 351,
+        "value": 0.5419432331218736,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1160,
+        "value": 0.5377241299002362,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1897,
+        "value": -0.4927592658092275,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1573,
+        "value": 0.490207908195138,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 866,
+        "value": -0.4846620422592553,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 389,
+        "value": -0.46580380076903416,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 680,
+        "value": -0.4488721400794252,
+        "fingerprint_bit": 1
+      }
+    ]
+  },
+  {
+    "partition_row": 5,
+    "true_label": 1,
+    "base_value": -0.33806653877453474,
+    "model_output": 3.367860257820799,
+    "top_local_bits": [
+      {
+        "bit_index": 1930,
+        "value": 1.1538374329996082,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 748,
+        "value": 0.6995839062915382,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1037,
+        "value": -0.6147099110013527,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 110,
+        "value": 0.5732813209807527,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 231,
+        "value": -0.562724832625285,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1866,
+        "value": -0.5595507808663579,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1160,
+        "value": 0.5377241299002362,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 623,
+        "value": 0.4951341549137637,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 889,
+        "value": 0.48014004348682726,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1840,
+        "value": 0.4673908841871874,
+        "fingerprint_bit": 1
+      }
+    ]
+  },
+  {
+    "partition_row": 6,
+    "true_label": 1,
+    "base_value": -0.33806653877453474,
+    "model_output": 2.5560371817587244,
+    "top_local_bits": [
+      {
+        "bit_index": 1998,
+        "value": -0.7198957286761648,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1794,
+        "value": 0.7101347098985208,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 785,
+        "value": 0.6346890142840542,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 790,
+        "value": -0.6307316935479802,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 674,
+        "value": 0.5871436058953597,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1102,
+        "value": 0.5734126700705806,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1638,
+        "value": 0.5290344850755271,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 102,
+        "value": 0.5190946873537143,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 645,
+        "value": -0.5079761598567378,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1535,
+        "value": 0.5021080377988808,
+        "fingerprint_bit": 1
+      }
+    ]
+  },
+  {
+    "partition_row": 7,
+    "true_label": 0,
+    "base_value": -0.33806653877453474,
+    "model_output": -2.9978725374316992,
+    "top_local_bits": [
+      {
+        "bit_index": 1998,
+        "value": -0.7198957286761648,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 193,
+        "value": 0.6999706812650809,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 748,
+        "value": 0.6995839062915382,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1929,
+        "value": 0.6584203995165827,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1356,
+        "value": 0.5762059575183115,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1866,
+        "value": -0.5595507808663579,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 718,
+        "value": -0.5528709963297723,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1160,
+        "value": 0.5377241299002362,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 957,
+        "value": 0.5368535274239337,
+        "fingerprint_bit": 1
+      },
+      {
+        "bit_index": 1855,
+        "value": -0.5118251322395874,
+        "fingerprint_bit": 1
+      }
+    ]
+  }
+]

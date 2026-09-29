@@ -1,0 +1,129 @@
+{
+  "config": {
+    "model": "random_forest",
+    "split": "scaffold",
+    "seed": 42,
+    "radius": 2,
+    "n_bits": 2048,
+    "train_fraction": 0.8,
+    "val_fraction": 0.1,
+    "test_fraction": 0.1,
+    "model_parameters": {
+      "n_estimators": 300,
+      "class_weight": "balanced",
+      "n_jobs": 1
+    },
+    "data_path": "data/raw/bace.csv"
+  },
+  "dataset_sha256": "f3fb9ce90bada3e2bd6148b0df13f8f8145a357bf87df0dd5b391ede974fc737",
+  "shap_version": "0.52.0",
+  "explained_partition": "test",
+  "sample_selection": "first_n_rows_of_fixed_test_split",
+  "sample_count": 8,
+  "linear_background": null,
+  "units": "probability_class_1",
+  "max_additivity_residual": 2.8529942980304313e-05,
+  "top_bits_by_mean_absolute_shap": [
+    {
+      "bit_index": 1563,
+      "mean_absolute_shap": 0.016652398835494246,
+      "training_prevalence": 0.18579686209744012
+    },
+    {
+      "bit_index": 1928,
+      "mean_absolute_shap": 0.012490091439782887,
+      "training_prevalence": 0.5276630883567299
+    },
+    {
+      "bit_index": 1229,
+      "mean_absolute_shap": 0.010315702789330979,
+      "training_prevalence": 0.13047068538398018
+    },
+    {
+      "bit_index": 1930,
+      "mean_absolute_shap": 0.009834861302154104,
+      "training_prevalence": 0.08670520231213873
+    },
+    {
+      "bit_index": 1199,
+      "mean_absolute_shap": 0.009698809824136238,
+      "training_prevalence": 0.3228736581337737
+    },
+    {
+      "bit_index": 444,
+      "mean_absolute_shap": 0.009062129267640879,
+      "training_prevalence": 0.3963666391412056
+    },
+    {
+      "bit_index": 623,
+      "mean_absolute_shap": 0.008360553671972745,
+      "training_prevalence": 0.18662262592898432
+    },
+    {
+      "bit_index": 435,
+      "mean_absolute_shap": 0.0073982656798329775,
+      "training_prevalence": 0.11973575557390587
+    },
+    {
+      "bit_index": 126,
+      "mean_absolute_shap": 0.006476530254597435,
+      "training_prevalence": 0.0495458298926507
+    },
+    {
+      "bit_index": 227,
+      "mean_absolute_shap": 0.006458153724873296,
+      "training_prevalence": 0.40214698596201487
+    },
+    {
+      "bit_index": 774,
+      "mean_absolute_shap": 0.0058969487876524875,
+      "training_prevalence": 0.00990916597853014
+    },
+    {
+      "bit_index": 1027,
+      "mean_absolute_shap": 0.005693457716008641,
+      "training_prevalence": 0.08670520231213873
+    },
+    {
+      "bit_index": 389,
+      "mean_absolute_shap": 0.005589712233942083,
+      "training_prevalence": 0.27580511973575556
+    },
+    {
+      "bit_index": 1385,
+      "mean_absolute_shap": 0.005564080071304663,
+      "training_prevalence": 0.17671345995045418
+    },
+    {
+      "bit_index": 119,
+      "mean_absolute_shap": 0.005254508626113874,
+      "training_prevalence": 0.08918249380677126
+    },
+    {
+      "bit_index": 1480,
+      "mean_absolute_shap": 0.0051932446479874585,
+      "training_prevalence": 0.11973575557390587
+    },
+    {
+      "bit_index": 665,
+      "mean_absolute_shap": 0.005022199071974706,
+      "training_prevalence": 0.11560693641618497
+    },
+    {
+      "bit_index": 1102,
+      "mean_absolute_shap": 0.004844078203369577,
+      "training_prevalence": 0.16267547481420314
+    },
+    {
+      "bit_index": 1840,
+      "mean_absolute_shap": 0.004582842330018227,
+      "training_prevalence": 0.14037985136251033
+    },
+    {
+      "bit_index": 1180,
+      "mean_absolute_shap": 0.004403308522126181,
+      "training_prevalence": 0.18414533443435177
+    }
+  ],
+  "limitations": "Attributions explain model outputs for hashed, collision-prone Morgan bits, not unique molecular substructures or biological mechanisms."
+}
