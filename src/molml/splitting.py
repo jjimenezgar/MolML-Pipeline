@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-import numpy as np
+import random
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem.Scaffolds import MurckoScaffold
@@ -17,17 +17,10 @@ def bemis_murcko_scaffold(smiles: str) -> str:
     return MurckoScaffold.MurckoScaffoldSmiles(mol=mol, includeChirality=False)
 
 
-def random_split(
-    df: pd.DataFrame,
-    train_fraction: float = 0.8,
-    val_fraction: float = 0.1,
-    seed: int = 42,
-):
-    """Stratified 80/10/10-style random split."""
+def random_split(df, train_fraction=0.8, val_fraction=0.1, seed=42):
     test_fraction = 1.0 - train_fraction - val_fraction
     if min(train_fraction, val_fraction, test_fraction) <= 0:
         raise ValueError("All split fractions must be positive.")
-
     train, temp = train_test_split(
         df, test_size=val_fraction + test_fraction, random_state=seed,
         stratify=df["label"]
@@ -39,39 +32,61 @@ def random_split(
     return tuple(x.reset_index(drop=True) for x in (train, val, test))
 
 
-def scaffold_split(
-    df: pd.DataFrame,
-    train_fraction: float = 0.8,
-    val_fraction: float = 0.1,
-):
-    """Deterministic scaffold-group split with no scaffold shared across sets."""
-    test_fraction = 1.0 - train_fraction - val_fraction
-    if min(train_fraction, val_fraction, test_fraction) <= 0:
-        raise ValueError("All split fractions must be positive.")
-
+def _scaffold_groups(df):
     groups = defaultdict(list)
     for idx, smiles in enumerate(df["smiles"]):
         groups[bemis_murcko_scaffold(smiles)].append(idx)
+    return list(groups.values())
 
-    # Largest scaffold families are assigned first; index tie-break is deterministic.
-    ordered = sorted(groups.values(), key=lambda g: (-len(g), g[0]))
+
+def scaffold_split(df, train_fraction=0.8, val_fraction=0.1, seed=42, max_attempts=200):
+    """Seeded scaffold-group split with no scaffold leakage.
+
+    Scaffold groups remain indivisible. Multiple deterministic seeded orderings are
+    tried because a naive largest-first allocation can produce a single-class
+    validation/test set on BACE. The best valid allocation minimizes deviation
+    from requested split sizes and the global positive-class fraction.
+    """
+    test_fraction = 1.0 - train_fraction - val_fraction
+    if min(train_fraction, val_fraction, test_fraction) <= 0:
+        raise ValueError("All split fractions must be positive.")
+    if df["label"].nunique() != 2:
+        raise ValueError("Scaffold classification split requires two classes.")
+
+    groups = _scaffold_groups(df)
     n = len(df)
-    train_cutoff = train_fraction * n
-    val_cutoff = (train_fraction + val_fraction) * n
-    train_idx, val_idx, test_idx = [], [], []
+    targets = [train_fraction * n, val_fraction * n, test_fraction * n]
+    global_rate = float(df["label"].mean())
+    best = None
 
-    for group in ordered:
-        if len(train_idx) + len(group) <= train_cutoff:
-            train_idx.extend(group)
-        elif len(train_idx) + len(val_idx) + len(group) <= val_cutoff:
-            val_idx.extend(group)
-        else:
-            test_idx.extend(group)
+    for attempt in range(max_attempts):
+        rng = random.Random(seed + attempt)
+        ordered = groups.copy()
+        rng.shuffle(ordered)
+        # Preserve a mild size preference while allowing seeded variation among
+        # similarly sized scaffold families.
+        ordered.sort(key=lambda g: -(len(g) + rng.random() * 2.0))
 
-    if not train_idx or not val_idx or not test_idx:
-        raise ValueError("Scaffold split produced an empty partition.")
+        bins = [[], [], []]
+        for group in ordered:
+            # Assign to the partition furthest below its requested capacity.
+            deficits = [targets[i] - len(bins[i]) for i in range(3)]
+            destination = max(range(3), key=lambda i: deficits[i])
+            bins[destination].extend(group)
 
-    return tuple(
-        df.iloc[idx].reset_index(drop=True)
-        for idx in (train_idx, val_idx, test_idx)
-    )
+        parts = [df.iloc[idx].reset_index(drop=True) for idx in bins]
+        if any(part.empty or part["label"].nunique() < 2 for part in parts):
+            continue
+
+        size_error = sum(abs(len(parts[i]) - targets[i]) / n for i in range(3))
+        balance_error = sum(abs(float(p["label"].mean()) - global_rate) for p in parts)
+        score = size_error + 0.25 * balance_error
+        if best is None or score < best[0]:
+            best = (score, parts)
+
+    if best is None:
+        raise ValueError(
+            "Could not construct scaffold-disjoint train/validation/test sets "
+            "containing both classes. Try different fractions or inspect the data."
+        )
+    return tuple(best[1])
