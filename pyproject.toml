@@ -20,6 +20,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7.4"]
+tracking = ["mlflow>=2.18,<5"]
+explain = ["shap>=0.46,<1"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

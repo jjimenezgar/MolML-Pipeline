@@ -22,7 +22,8 @@ def _counts(frame):
     return {str(i): int((frame["label"] == i).sum()) for i in (0, 1)}
 
 
-def run_experiment(config: ExperimentConfig, output_dir: Path | None = None):
+def fit_experiment(config: ExperimentConfig):
+    """Fit once on the training partition and expose unchanged evaluation sets."""
     data_path = Path(config.data_path)
     df = load_bace(data_path)
     if df["label"].nunique() != 2:
@@ -46,6 +47,13 @@ def run_experiment(config: ExperimentConfig, output_dir: Path | None = None):
 
     model = build_model(config.model, seed=config.seed, parameters=config.model_parameters)
     model.fit(features(train), train["label"])
+    return model, parts, features, scaffold_sets, overlaps
+
+
+def run_experiment(config: ExperimentConfig, output_dir: Path | None = None):
+    data_path = Path(config.data_path)
+    model, parts, features, scaffold_sets, overlaps = fit_experiment(config)
+    df = load_bace(data_path)
     result = {
         "config": asdict(config),
         "dataset_sha256": hashlib.sha256(data_path.read_bytes()).hexdigest(),

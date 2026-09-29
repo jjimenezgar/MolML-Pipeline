@@ -59,3 +59,16 @@ V1.1 may add applicability-domain analysis and MLflow after the V1 benchmark. La
 ## License
 
 MIT.
+
+## V1.1 — similarity domain and experiment tracking
+
+V1.1 adds a **diagnostic** of how similar a query fingerprint is to its nearest training fingerprint, using Tanimoto similarity. The domain threshold is the fifth percentile of each training molecule's nearest *other* training molecule; validation and test data never determine it. Results also mark whether the Bemis–Murcko scaffold occurs in training. Similarity and scaffold novelty answer different questions: a new scaffold may still have high fingerprint similarity. The threshold is heuristic, not a calibrated uncertainty estimate or a guarantee of accuracy. No model or threshold was selected by test performance.
+
+```bash
+python -m molml.v11 --config configs/rf_scaffold.yaml --output results/v1.1/rf_scaffold
+pip install -e ".[tracking]"
+python -m molml.v11 --config configs/rf_scaffold.yaml --output results/v1.1/rf_scaffold --mlflow-uri sqlite:///mlflow.db
+python -m mlflow ui --backend-store-uri sqlite:///mlflow.db
+```
+
+MLflow is opt-in and logs the fixed configuration, dataset hash, domain summary and CSV/JSON artifacts to a local SQLite store (ignored by Git). The four reproducible CSV/JSON results are in [`results/v1.1`](results/v1.1). For both models, the random test has 146/152 inside the heuristic similarity domain and 43/152 unseen scaffolds; the scaffold test has 126/151 inside the similarity domain and 151/151 unseen scaffolds. The split and fingerprint configuration determine these diagnostics, so their values coincide across models. Predicted probabilities in the CSV remain unvalidated model outputs.

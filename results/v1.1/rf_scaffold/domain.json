@@ -1,0 +1,39 @@
+{
+  "method": "max_train_tanimoto_morgan_leave_one_out_5th_percentile",
+  "config": {
+    "model": "random_forest",
+    "split": "scaffold",
+    "seed": 42,
+    "radius": 2,
+    "n_bits": 2048,
+    "train_fraction": 0.8,
+    "val_fraction": 0.1,
+    "test_fraction": 0.1,
+    "model_parameters": {
+      "n_estimators": 300,
+      "class_weight": "balanced",
+      "n_jobs": 1
+    },
+    "data_path": "data/raw/bace.csv"
+  },
+  "dataset_sha256": "f3fb9ce90bada3e2bd6148b0df13f8f8145a357bf87df0dd5b391ede974fc737",
+  "notes": "Similarity coverage is a heuristic, not calibrated uncertainty or evidence of biological activity.",
+  "validation": {
+    "threshold": 0.606071964017991,
+    "threshold_quantile": 0.05,
+    "count": 151,
+    "in_domain_count": 129,
+    "in_domain_fraction": 0.8543046357615894,
+    "novel_scaffold_count": 151,
+    "nearest_train_similarity_median": 0.7540983606557377
+  },
+  "test": {
+    "threshold": 0.606071964017991,
+    "threshold_quantile": 0.05,
+    "count": 151,
+    "in_domain_count": 126,
+    "in_domain_fraction": 0.8344370860927153,
+    "novel_scaffold_count": 151,
+    "nearest_train_similarity_median": 0.7090909090909091
+  }
+}

@@ -29,3 +29,5 @@ jobs:
           for config in configs/*.yaml; do
             python -m molml.train --config "$config" > /dev/null
           done
+      - name: Validate V1.1 domain on real BACE
+        run: python -m molml.v11 --config configs/rf_scaffold.yaml --output /tmp/molml-v11 > /dev/null

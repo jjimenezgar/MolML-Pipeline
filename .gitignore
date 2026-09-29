@@ -9,3 +9,5 @@ build/
 data/raw/*
 !data/raw/.gitkeep
 artifacts/
+mlruns/
+mlflow.db
