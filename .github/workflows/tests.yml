@@ -19,5 +19,12 @@ jobs:
           cache: pip
       - name: Install package
         run: python -m pip install -e ".[dev]"
-      - name: Run tests
+      - name: Run unit tests
         run: pytest -q
+      - name: Download official MoleculeNet BACE dataset
+        run: |
+          curl --fail --location --retry 3             https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv             --output data/raw/bace.csv
+      - name: Validate real BACE scaffold benchmark
+        run: |
+          python -m molml.train --data data/raw/bace.csv --split scaffold --model logistic_regression
+          python -m molml.train --data data/raw/bace.csv --split scaffold --model random_forest
