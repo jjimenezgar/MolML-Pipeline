@@ -1,0 +1,98 @@
+{
+  "config": {
+    "model": "logistic_regression",
+    "split": "scaffold",
+    "seed": 42,
+    "radius": 2,
+    "n_bits": 2048,
+    "train_fraction": 0.8,
+    "val_fraction": 0.1,
+    "test_fraction": 0.1,
+    "model_parameters": {
+      "max_iter": 2000,
+      "class_weight": "balanced"
+    },
+    "data_path": "data/raw/bace.csv"
+  },
+  "dataset_sha256": "f3fb9ce90bada3e2bd6148b0df13f8f8145a357bf87df0dd5b391ede974fc737",
+  "dataset_size": 1513,
+  "class_balance": {
+    "0": 822,
+    "1": 691
+  },
+  "partitions": {
+    "train": {
+      "size": 1211,
+      "class_balance": {
+        "0": 653,
+        "1": 558
+      },
+      "unique_scaffolds": 387
+    },
+    "validation": {
+      "size": 151,
+      "class_balance": {
+        "0": 87,
+        "1": 64
+      },
+      "unique_scaffolds": 140
+    },
+    "test": {
+      "size": 151,
+      "class_balance": {
+        "0": 82,
+        "1": 69
+      },
+      "unique_scaffolds": 144
+    }
+  },
+  "scaffold_overlap": {
+    "train_validation": 0,
+    "train_test": 0,
+    "validation_test": 0
+  },
+  "threshold": 0.5,
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "rdkit": "2026.03.6",
+    "scikit_learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "pyyaml": "6.0.3"
+  },
+  "validation": {
+    "roc_auc": 0.8886494252873562,
+    "pr_auc": 0.8567250320211273,
+    "f1": 0.8095238095238095,
+    "mcc": 0.6734688740079218,
+    "balanced_accuracy": 0.8352191091954023,
+    "confusion_matrix": [
+      [
+        76,
+        11
+      ],
+      [
+        13,
+        51
+      ]
+    ]
+  },
+  "test": {
+    "roc_auc": 0.8508306822198657,
+    "pr_auc": 0.8078637098011853,
+    "f1": 0.7681159420289855,
+    "mcc": 0.5729939908094733,
+    "balanced_accuracy": 0.7864969954047367,
+    "confusion_matrix": [
+      [
+        66,
+        16
+      ],
+      [
+        16,
+        53
+      ]
+    ]
+  }
+}

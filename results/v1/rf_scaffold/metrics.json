@@ -1,0 +1,99 @@
+{
+  "config": {
+    "model": "random_forest",
+    "split": "scaffold",
+    "seed": 42,
+    "radius": 2,
+    "n_bits": 2048,
+    "train_fraction": 0.8,
+    "val_fraction": 0.1,
+    "test_fraction": 0.1,
+    "model_parameters": {
+      "n_estimators": 300,
+      "class_weight": "balanced",
+      "n_jobs": 1
+    },
+    "data_path": "data/raw/bace.csv"
+  },
+  "dataset_sha256": "f3fb9ce90bada3e2bd6148b0df13f8f8145a357bf87df0dd5b391ede974fc737",
+  "dataset_size": 1513,
+  "class_balance": {
+    "0": 822,
+    "1": 691
+  },
+  "partitions": {
+    "train": {
+      "size": 1211,
+      "class_balance": {
+        "0": 653,
+        "1": 558
+      },
+      "unique_scaffolds": 387
+    },
+    "validation": {
+      "size": 151,
+      "class_balance": {
+        "0": 87,
+        "1": 64
+      },
+      "unique_scaffolds": 140
+    },
+    "test": {
+      "size": 151,
+      "class_balance": {
+        "0": 82,
+        "1": 69
+      },
+      "unique_scaffolds": 144
+    }
+  },
+  "scaffold_overlap": {
+    "train_validation": 0,
+    "train_test": 0,
+    "validation_test": 0
+  },
+  "threshold": 0.5,
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "rdkit": "2026.03.6",
+    "scikit_learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "pyyaml": "6.0.3"
+  },
+  "validation": {
+    "roc_auc": 0.8981681034482759,
+    "pr_auc": 0.8566657958051972,
+    "f1": 0.7716535433070866,
+    "mcc": 0.6060129325609253,
+    "balanced_accuracy": 0.8023527298850575,
+    "confusion_matrix": [
+      [
+        73,
+        14
+      ],
+      [
+        15,
+        49
+      ]
+    ]
+  },
+  "test": {
+    "roc_auc": 0.8725698126546484,
+    "pr_auc": 0.8312005663729373,
+    "f1": 0.7538461538461538,
+    "mcc": 0.5723649609746647,
+    "balanced_accuracy": 0.7819017320607988,
+    "confusion_matrix": [
+      [
+        70,
+        12
+      ],
+      [
+        20,
+        49
+      ]
+    ]
+  }
+}

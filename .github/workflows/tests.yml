@@ -24,7 +24,8 @@ jobs:
       - name: Download official MoleculeNet BACE dataset
         run: |
           curl --fail --location --retry 3             https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv             --output data/raw/bace.csv
-      - name: Validate real BACE scaffold benchmark
+      - name: Validate four real BACE configurations
         run: |
-          python -m molml.train --data data/raw/bace.csv --split scaffold --model logistic_regression
-          python -m molml.train --data data/raw/bace.csv --split scaffold --model random_forest
+          for config in configs/*.yaml; do
+            python -m molml.train --config "$config" > /dev/null
+          done
