@@ -1,0 +1,12 @@
+data_path: data/raw/bace.csv
+model: logistic_regression
+split: scaffold
+seed: 42
+radius: 2
+n_bits: 2048
+train_fraction: 0.8
+val_fraction: 0.1
+test_fraction: 0.1
+model_parameters:
+  max_iter: 2000
+  class_weight: balanced

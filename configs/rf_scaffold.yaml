@@ -1,0 +1,13 @@
+data_path: data/raw/bace.csv
+model: random_forest
+split: scaffold
+seed: 42
+radius: 2
+n_bits: 2048
+train_fraction: 0.8
+val_fraction: 0.1
+test_fraction: 0.1
+model_parameters:
+  n_estimators: 300
+  class_weight: balanced
+  n_jobs: 1
