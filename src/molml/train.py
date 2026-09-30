@@ -1,4 +1,4 @@
-"""Command-line training entry point for V1."""
+"""Command-line training entry point for V1 and saved inference bundles."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import sys
 
+from molml.artifacts import build_model_bundle, save_model_bundle
 from molml.config import ExperimentConfig, load_config
 from molml.data import load_bace
 from molml.evaluate import classification_metrics
@@ -50,7 +51,8 @@ def fit_experiment(config: ExperimentConfig):
     return model, parts, features, scaffold_sets, overlaps
 
 
-def run_experiment(config: ExperimentConfig, output_dir: Path | None = None):
+def run_experiment(config: ExperimentConfig, output_dir: Path | None = None,
+                   model_path: Path | None = None):
     data_path = Path(config.data_path)
     model, parts, features, scaffold_sets, overlaps = fit_experiment(config)
     df = load_bace(data_path)
@@ -76,6 +78,10 @@ def run_experiment(config: ExperimentConfig, output_dir: Path | None = None):
     if output_dir is not None:
         output_dir.mkdir(parents=True, exist_ok=True)
         (output_dir / "metrics.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")
+    if model_path is not None:
+        bundle = build_model_bundle(model, config, parts["train"]["smiles"].tolist(),
+                                    dataset_sha256=result["dataset_sha256"])
+        save_model_bundle(bundle, model_path)
     return result
 
 
@@ -100,9 +106,11 @@ def run(data_path: str, split_name: str, model_name: str, seed: int = 42):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train a MolML-Pipeline V1 baseline.")
+    parser = argparse.ArgumentParser(description="Train MolML-Pipeline BACE baselines.")
     parser.add_argument("--config", type=Path, help="YAML experiment configuration")
     parser.add_argument("--output", type=Path, help="Directory for metrics and test plots")
+    parser.add_argument("--save-model", type=Path,
+                        help="Save a trusted local inference bundle at this path")
     parser.add_argument("--data", help="Legacy dataset path (use --config for reproducible runs)")
     parser.add_argument("--split", choices=["random", "scaffold"], default="scaffold")
     parser.add_argument("--model", choices=["logistic_regression", "random_forest"], default="random_forest")
@@ -110,9 +118,11 @@ def main():
     args = parser.parse_args()
     if args.config and args.data or not args.config and not args.data:
         parser.error("Provide exactly one of --config or --data.")
+    if args.save_model and not args.config:
+        parser.error("--save-model requires --config.")
     if args.config:
         cfg = load_config(args.config)
-        result = run_experiment(cfg, args.output)
+        result = run_experiment(cfg, args.output, model_path=args.save_model)
     else:
         if args.output:
             parser.error("--output requires --config.")

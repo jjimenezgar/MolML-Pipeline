@@ -29,7 +29,9 @@ jobs:
         run: pytest -q
       - name: Download official MoleculeNet BACE dataset
         run: |
-          curl --fail --location --retry 3             https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv             --output data/raw/bace.csv
+          curl --fail --location --retry 3 \
+            https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv \
+            --output data/raw/bace.csv
       - name: Validate four real BACE configurations
         run: |
           for config in configs/*.yaml; do
@@ -41,3 +43,20 @@ jobs:
         run: |
           python -m molml.explain --config configs/lr_scaffold.yaml --output /tmp/molml-v12-lr > /dev/null
           python -m molml.explain --config configs/rf_scaffold.yaml --output /tmp/molml-v12-rf > /dev/null
+      - name: Validate V3 saved-model inference on real BACE
+        run: |
+          python -m molml.train --config configs/rf_scaffold.yaml \
+            --output /tmp/molml-v3/train \
+            --save-model /tmp/molml-v3/model.joblib > /dev/null
+          printf 'smiles,name\nCCO,ethanol\nnot-a-smiles,invalid\n' > /tmp/molml-v3-input.csv
+          python -m molml.predict --model /tmp/molml-v3/model.joblib \
+            --input /tmp/molml-v3-input.csv --output /tmp/molml-v3-output.csv
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          rows = list(csv.DictReader(Path('/tmp/molml-v3-output.csv').open()))
+          assert len(rows) == 2
+          assert rows[0]['status'] == 'ok' and rows[0]['prediction'] in {'0', '1'}
+          assert rows[0]['probability_class_1']
+          assert rows[1]['status'] == 'invalid' and rows[1]['error']
+          PY

@@ -56,15 +56,16 @@ The random test results do not establish superior generalization to new chemical
 
 ## Project status and purpose
 
-V1, V1.1 and V1.2 are implemented. The project demonstrates a reproducible molecular ML workflow: **SMILES → validation → Morgan fingerprints → fixed random/scaffold partitions → baseline training → evaluation → similarity diagnostics and model attribution**. It can support discussion of candidate prioritization, but prospective utility on new compounds has not been validated.
+V1, V1.1, V1.2 and V3 are implemented. The project demonstrates a reproducible molecular ML workflow: **SMILES → validation → Morgan fingerprints → fixed random/scaffold partitions → baseline training → evaluation → similarity diagnostics → model attribution → local inference**. It can support discussion of candidate prioritization, but prospective utility on new compounds has not been validated.
 
 | Stage | Delivered |
 | --- | --- |
 | V1 | Four fixed BACE experiments, leakage diagnostics, classification metrics and plots |
 | V1.1 | Training-only similarity-domain diagnostics, scaffold novelty and optional local MLflow tracking |
 | V1.2 | Checked SHAP attributions for eight fixed test molecules per scaffold model |
+| V3 | Versioned local model bundle and batch predictions with per-molecule validation and training-domain diagnostics |
 
-Possible future work is repeated predeclared splits to measure partition variability, followed by saved-model inference for new SMILES. These are not part of V1.2. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
+The next useful scientific step is repeated predeclared splits to measure partition variability. API serving and Docker packaging can follow once the local inference interface is stable. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
 
 ## License
 
@@ -94,3 +95,26 @@ python -m molml.explain --config configs/rf_scaffold.yaml --output results/v1.2/
 ```
 
 [`results/v1.2`](results/v1.2) contains summary metadata, a small set of local attributions and a bar chart of mean absolute attribution by fingerprint-bit index. **Hashed Morgan bits can collide and do not uniquely identify chemical fragments.** Attributions describe these fitted models on these examples; they are not causal effects, experimentally validated BACE1 inhibition, or evidence for a biological mechanism. The magnitudes from Logistic Regression and Random Forest have different units and should not be compared directly. Eight examples do not establish stable global importance.
+
+
+## V3 — saved-model local inference
+
+Train the reproducible scaffold-split baseline and save a local bundle containing the fitted model, fingerprint settings, training-only similarity reference, scaffold reference and dataset provenance:
+
+```bash
+python -m molml.train \\
+  --config configs/rf_scaffold.yaml \\
+  --output results/v3/rf_scaffold \\
+  --save-model artifacts/v3/rf_scaffold.joblib
+```
+
+The `artifacts/` directory is ignored by Git. Make a CSV with a `smiles` column, then predict a batch:
+
+```bash
+python -m molml.predict \\
+  --model artifacts/v3/rf_scaffold.joblib \\
+  --input molecules.csv \\
+  --output predictions.csv
+```
+
+For a few structures, use `--smiles "CCO" "c1ccccc1O"` instead of `--input`; omit `--output` to write CSV to the terminal. Each output row includes the class-1 model score, the fixed 0.5 threshold label, nearest-training Tanimoto similarity, the heuristic similarity-domain flag, scaffold novelty, and row-level input status. Invalid SMILES are reported per row without stopping the batch. These scores are uncalibrated model outputs, not experimentally validated activities. Similarity coverage is a heuristic, not an uncertainty or accuracy guarantee. Model bundles use joblib/pickle: load only bundles from sources you trust. This local CLI is the interface to stabilize before adding an API or Docker image.

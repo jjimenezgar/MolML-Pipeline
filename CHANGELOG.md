@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0 — V3 local inference
+
+- Save a versioned local model bundle from the reproducible BACE training command.
+- Add batch inference for one or more SMILES, including per-row invalid-input reporting.
+- Return class-1 model scores, fixed-threshold labels, training-set Tanimoto coverage and scaffold novelty.
+- Preserve dataset and training configuration provenance in the bundle; add inference tests and a real-BACE CI smoke check.
+
+The bundle is intended for local use and is not an experimentally validated activity model. Load only bundles from trusted sources because joblib uses pickle internally. API serving and Docker packaging are intentionally left for the next stage.
+
 ## 1.2.0 — 2026-09-30
 
 - Reproducible BACE baseline experiments with Morgan fingerprints, Logistic Regression and Random Forest, random and disjoint scaffold partitions, metrics and plots.
