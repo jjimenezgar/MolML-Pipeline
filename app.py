@@ -56,12 +56,12 @@ def draw_structure(mol) -> bytes:
         nx, ny = -dy / length * 0.075, dx / length * 0.075
         order = bond.GetBondTypeAsDouble()
         styles = [(0.0, "-")]
-        if order >= 2.5:
+        if bond.GetIsAromatic():
+            styles = [(0.0, "--")]
+        elif order >= 2.5:
             styles = [(-1, "-"), (0, "-"), (1, "-")]
         elif order >= 1.5:
             styles = [(-0.65, "-"), (0.65, "-")]
-        elif bond.GetIsAromatic():
-            styles = [(0.0, "--")]
         for offset, linestyle in styles:
             ax.plot(
                 [start.x + offset * nx, end.x + offset * nx],
