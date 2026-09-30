@@ -10,7 +10,7 @@
 
 **A small, reproducible machine-learning project that learns to distinguish molecules reported as BACE-1 inhibitors from those reported as non-inhibitors.**
 
-It demonstrates a complete workflow—from published experimental data to a tested, runnable prediction service—using established methods. It is an engineering and learning project, not a new drug-discovery method.
+It demonstrates a reproducible end-to-end workflow—from published experimental data to a tested prediction service—using established methods. The focus is on sound engineering and transparent evaluation, not on claiming a new drug-discovery method.
 
 The optional Streamlit demo lets you enter a molecule as SMILES, view the model's estimate, and inspect how similar it is to the training chemistry. It runs the model inside the Streamlit app; no separate API service is needed. Click the badge above to deploy your own instance on Streamlit Community Cloud, or run it locally:
 
