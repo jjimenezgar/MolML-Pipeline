@@ -1,5 +1,7 @@
 # MolML-Pipeline
 
+![MolML-Pipeline: from molecular structure to a first-pass BACE-1 activity estimate](assets/molml-pipeline-cover.jpg)
+
 **A small, reproducible machine-learning project that learns to distinguish molecules reported as BACE-1 inhibitors from those reported as non-inhibitors.**
 
 It demonstrates a complete workflow—from published experimental data to a tested, runnable prediction service—using established methods. It is an engineering and learning project, not a new drug-discovery method.
