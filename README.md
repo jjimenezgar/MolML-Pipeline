@@ -56,7 +56,7 @@ The random test results do not establish superior generalization to new chemical
 
 ## Project status and purpose
 
-V1, V1.1, V1.2 and V3 are implemented. The project demonstrates a reproducible molecular ML workflow: **SMILES → validation → Morgan fingerprints → fixed random/scaffold partitions → baseline training → evaluation → similarity diagnostics → model attribution → local inference**. It can support discussion of candidate prioritization, but prospective utility on new compounds has not been validated.
+V1, V1.1, V1.2, V3 and V4 are implemented. The project demonstrates a reproducible molecular ML workflow: **SMILES → validation → Morgan fingerprints → fixed random/scaffold partitions → baseline training → evaluation → similarity diagnostics → model attribution → local inference → HTTP API**. It can support discussion of candidate prioritization, but prospective utility on new compounds has not been validated.
 
 | Stage | Delivered |
 | --- | --- |
@@ -64,8 +64,9 @@ V1, V1.1, V1.2 and V3 are implemented. The project demonstrates a reproducible m
 | V1.1 | Training-only similarity-domain diagnostics, scaffold novelty and optional local MLflow tracking |
 | V1.2 | Checked SHAP attributions for eight fixed test molecules per scaffold model |
 | V3 | Versioned local model bundle and batch predictions with per-molecule validation and training-domain diagnostics |
+| V4 | Optional local FastAPI service that reuses V3 inference |
 
-The next useful scientific step is repeated predeclared splits to measure partition variability. API serving and Docker packaging can follow once the local inference interface is stable. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
+The next useful scientific step is repeated predeclared splits to measure partition variability. Docker packaging can follow after the API has been exercised locally. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
 
 ## License
 
@@ -117,4 +118,31 @@ python -m molml.predict \\
   --output predictions.csv
 ```
 
-For a few structures, use `--smiles "CCO" "c1ccccc1O"` instead of `--input`; omit `--output` to write CSV to the terminal. Each output row includes the class-1 model score, the fixed 0.5 threshold label, nearest-training Tanimoto similarity, the heuristic similarity-domain flag, scaffold novelty, and row-level input status. Invalid SMILES are reported per row without stopping the batch. These scores are uncalibrated model outputs, not experimentally validated activities. Similarity coverage is a heuristic, not an uncertainty or accuracy guarantee. Model bundles use joblib/pickle: load only bundles from sources you trust. This local CLI is the interface to stabilize before adding an API or Docker image.
+For a few structures, use `--smiles "CCO" "c1ccccc1O"` instead of `--input`; omit `--output` to write CSV to the terminal. Each output row includes the class-1 model score, the fixed 0.5 threshold label, nearest-training Tanimoto similarity, the heuristic similarity-domain flag, scaffold novelty, and row-level input status. Invalid SMILES are reported per row without stopping the batch. These scores are uncalibrated model outputs, not experimentally validated activities. Similarity coverage is a heuristic, not an uncertainty or accuracy guarantee. Model bundles use joblib/pickle: load only bundles from sources you trust. This CLI is also the inference layer used by the V4 local API. Container packaging remains for the next stage.
+
+
+## V4 — local HTTP API
+
+Install the optional API dependencies (the core ML dependencies are installed with the package):
+
+```bash
+pip install -e ".[api]"
+```
+
+Start the service using the V3 model bundle created above. The default bind address is `127.0.0.1`, so it accepts requests only from your computer:
+
+```bash
+MOLML_MODEL_PATH=artifacts/v3/rf_scaffold.joblib molml-api
+```
+
+Check that the model loaded and open the interactive API documentation at `http://127.0.0.1:8000/docs`:
+
+```bash
+curl http://127.0.0.1:8000/health
+curl --request POST \\
+  --header 'Content-Type: application/json' \\
+  --data '{"smiles":["CCO","not-a-smiles"]}' \\
+  http://127.0.0.1:8000/predict
+```
+
+`POST /predict` accepts a JSON object with a `smiles` list and returns the V3 fields for each molecule. A batch can contain up to 128 SMILES; invalid entries return a row-level error. The model bundle loads once when the service starts. Keep this API on localhost: it has no authentication and is intended for local development, not public deployment. Docker and deployment settings are outside V4.

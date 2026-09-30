@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0 — V4 local HTTP API
+
+- Add an optional FastAPI service with `/health` and `/predict` endpoints backed by the V3 model bundle.
+- Load and validate the trusted bundle once on startup; expose row-level invalid-SMILES results and cap batches at 128 structures.
+- Add API unit tests and a live GitHub Actions smoke test using the trained BACE model.
+
+The server binds to localhost by default and has no authentication. It is for local development; public deployment and Docker are not part of V4.
+
+
 ## 1.3.0 — V3 local inference
 
 - Save a versioned local model bundle from the reproducible BACE training command.
