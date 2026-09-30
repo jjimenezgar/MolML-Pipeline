@@ -56,7 +56,7 @@ The random test results do not establish superior generalization to new chemical
 
 ## Project status and purpose
 
-V1, V1.1, V1.2, V3 and V4 are implemented. The project demonstrates a reproducible molecular ML workflow: **SMILES → validation → Morgan fingerprints → fixed random/scaffold partitions → baseline training → evaluation → similarity diagnostics → model attribution → local inference → HTTP API**. It can support discussion of candidate prioritization, but prospective utility on new compounds has not been validated.
+V1, V1.1, V1.2, V3, V4 and V5 are implemented. The project demonstrates a reproducible molecular ML workflow: **SMILES → validation → Morgan fingerprints → fixed random/scaffold partitions → baseline training → evaluation → similarity diagnostics → model attribution → local inference → HTTP API → Docker**. It can support discussion of candidate prioritization, but prospective utility on new compounds has not been validated.
 
 | Stage | Delivered |
 | --- | --- |
@@ -65,8 +65,9 @@ V1, V1.1, V1.2, V3 and V4 are implemented. The project demonstrates a reproducib
 | V1.2 | Checked SHAP attributions for eight fixed test molecules per scaffold model |
 | V3 | Versioned local model bundle and batch predictions with per-molecule validation and training-domain diagnostics |
 | V4 | Optional local FastAPI service that reuses V3 inference |
+| V5 | Docker image and Compose setup for localhost API serving with a read-only model mount |
 
-The next useful scientific step is repeated predeclared splits to measure partition variability. Docker packaging can follow after the API has been exercised locally. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
+The next useful scientific step is repeated predeclared splits to measure partition variability. The container setup is intended for local development; an internet-facing deployment needs authentication and deployment-specific security controls. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
 
 ## License
 
@@ -118,7 +119,7 @@ python -m molml.predict \\
   --output predictions.csv
 ```
 
-For a few structures, use `--smiles "CCO" "c1ccccc1O"` instead of `--input`; omit `--output` to write CSV to the terminal. Each output row includes the class-1 model score, the fixed 0.5 threshold label, nearest-training Tanimoto similarity, the heuristic similarity-domain flag, scaffold novelty, and row-level input status. Invalid SMILES are reported per row without stopping the batch. These scores are uncalibrated model outputs, not experimentally validated activities. Similarity coverage is a heuristic, not an uncertainty or accuracy guarantee. Model bundles use joblib/pickle: load only bundles from sources you trust. This CLI is also the inference layer used by the V4 local API. Container packaging remains for the next stage.
+For a few structures, use `--smiles "CCO" "c1ccccc1O"` instead of `--input`; omit `--output` to write CSV to the terminal. Each output row includes the class-1 model score, the fixed 0.5 threshold label, nearest-training Tanimoto similarity, the heuristic similarity-domain flag, scaffold novelty, and row-level input status. Invalid SMILES are reported per row without stopping the batch. These scores are uncalibrated model outputs, not experimentally validated activities. Similarity coverage is a heuristic, not an uncertainty or accuracy guarantee. Model bundles use joblib/pickle: load only bundles from sources you trust. This CLI is also the inference layer used by the V4 local API and V5 container.
 
 
 ## V4 — local HTTP API
@@ -145,4 +146,32 @@ curl --request POST \\
   http://127.0.0.1:8000/predict
 ```
 
-`POST /predict` accepts a JSON object with a `smiles` list and returns the V3 fields for each molecule. A batch can contain up to 128 SMILES; invalid entries return a row-level error. The model bundle loads once when the service starts. Keep this API on localhost: it has no authentication and is intended for local development, not public deployment. Docker and deployment settings are outside V4.
+`POST /predict` accepts a JSON object with a `smiles` list and returns the V3 fields for each molecule. A batch can contain up to 128 SMILES; invalid entries return a row-level error. The model bundle loads once when the service starts. Keep this API on localhost: it has no authentication and is intended for local development, not public deployment.
+
+
+## V5 — Docker
+
+Build the V3 model bundle first using the command above. Docker Compose builds the API image, mounts the model read-only at runtime, and publishes port 8000 only on localhost. The model file is excluded from the image and must remain a trusted bundle.
+
+On Linux, run Compose with your user and group IDs so the container can read the locally generated model file:
+
+```bash
+MOLML_UID=$(id -u) MOLML_GID=$(id -g) docker compose up --build
+```
+
+On Docker Desktop, the default Compose IDs usually work:
+
+```bash
+docker compose up --build
+```
+
+Check `http://127.0.0.1:8000/health` or open `http://127.0.0.1:8000/docs`. Send a prediction request with:
+
+```bash
+curl --request POST \\
+  --header 'Content-Type: application/json' \\
+  --data '{"smiles":["CCO","not-a-smiles"]}' \\
+  http://127.0.0.1:8000/predict
+```
+
+Set `MOLML_MODEL_FILE=/path/to/model.joblib` to mount a different V3 bundle. Stop the service with `docker compose down`. Requires Docker Engine and Docker Compose v2. The image does not contain model data, and this unauthenticated API is bound to localhost for development only.

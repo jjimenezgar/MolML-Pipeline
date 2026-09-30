@@ -41,7 +41,7 @@ def create_app(*, model_path: str | Path | None = None, bundle: dict | None = No
     app = FastAPI(
         title="MolML-Pipeline API",
         description="Local inference for the MoleculeNet BACE baseline. Scores are unvalidated model outputs.",
-        version="1.4.0",
+        version="1.5.0",
         lifespan=lifespan,
     )
 

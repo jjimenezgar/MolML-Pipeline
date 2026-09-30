@@ -85,3 +85,34 @@ jobs:
           assert rows[0]['status'] == 'ok' and rows[0]['prediction'] in (0, 1)
           assert rows[1]['status'] == 'invalid' and rows[1]['error']
           PY
+
+      - name: Build Docker image and smoke-test model API
+        if: matrix.python-version == '3.12'
+        run: |
+          docker build --tag molml-pipeline:test .
+          docker run --detach --rm --name molml-docker-test \
+            --user "$(id -u):$(id -g)" \
+            --publish 127.0.0.1:8001:8000 \
+            --env MOLML_MODEL_PATH=/models/model.joblib \
+            --volume /tmp/molml-v3/model.joblib:/models/model.joblib:ro \
+            molml-pipeline:test
+          trap 'docker stop molml-docker-test >/dev/null 2>&1 || true' EXIT
+          for attempt in $(seq 1 45); do
+            if curl --fail --silent http://127.0.0.1:8001/health > /tmp/molml-docker-health.json; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent --request POST \
+            --header 'Content-Type: application/json' \
+            --data '{"smiles":["CCO","not-a-smiles"]}' \
+            http://127.0.0.1:8001/predict > /tmp/molml-docker-predictions.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          health = json.loads(Path('/tmp/molml-docker-health.json').read_text())
+          rows = json.loads(Path('/tmp/molml-docker-predictions.json').read_text())['predictions']
+          assert health['status'] == 'ok' and health['model_ready'] is True
+          assert rows[0]['status'] == 'ok' and rows[0]['prediction'] in (0, 1)
+          assert rows[1]['status'] == 'invalid' and rows[1]['error']
+          PY

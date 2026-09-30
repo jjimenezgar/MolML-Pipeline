@@ -1,0 +1,17 @@
+name: molml-pipeline
+services:
+  api:
+    build: .
+    image: molml-pipeline:local
+    environment:
+      MOLML_MODEL_PATH: /models/model.joblib
+      MOLML_API_HOST: 0.0.0.0
+      MOLML_API_PORT: "8000"
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - "${MOLML_MODEL_FILE:-./artifacts/v3/rf_scaffold.joblib}:/models/model.joblib:ro"
+    user: "${MOLML_UID:-1000}:${MOLML_GID:-1000}"
+    init: true
+    security_opt:
+      - no-new-privileges:true

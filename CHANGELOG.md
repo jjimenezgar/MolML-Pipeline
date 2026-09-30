@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.0 — V5 Docker
+
+- Add a Python 3.12 runtime image for the V4 API with a health check and non-root default user.
+- Add a Docker Compose service that mounts a trusted V3 model bundle read-only and binds the published port to localhost.
+- Exclude model artifacts and datasets from the build context; add a real-model Docker API smoke test to CI.
+
+The API remains intended for local development and has no authentication.
+
 ## 1.4.0 — V4 local HTTP API
 
 - Add an optional FastAPI service with `/health` and `/predict` endpoints backed by the V3 model bundle.
