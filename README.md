@@ -2,9 +2,24 @@
 
 ![MolML-Pipeline: from molecular structure to a first-pass BACE-1 activity estimate](assets/molml-pipeline-cover.jpg)
 
+<p align="center">
+  <a href="https://share.streamlit.io/deploy?repository=jjimenezgar/MolML-Pipeline&branch=main&mainModule=app.py">
+    <img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg" alt="Deploy the interactive demo on Streamlit Community Cloud">
+  </a>
+</p>
+
 **A small, reproducible machine-learning project that learns to distinguish molecules reported as BACE-1 inhibitors from those reported as non-inhibitors.**
 
 It demonstrates a complete workflow—from published experimental data to a tested, runnable prediction service—using established methods. It is an engineering and learning project, not a new drug-discovery method.
+
+The optional Streamlit demo lets you enter a molecule as SMILES, view the model's estimate, and inspect how similar it is to the training chemistry. It runs the model inside the Streamlit app; no separate API service is needed. Click the badge above to deploy your own instance on Streamlit Community Cloud, or run it locally:
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+The first launch downloads the checksum-verified BACE benchmark and fits the selected baseline. The prediction score is not a measured probability of binding; see [Project boundaries](#project-boundaries).
 
 ## The question
 
