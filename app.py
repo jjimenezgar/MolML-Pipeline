@@ -11,7 +11,13 @@ from urllib.request import urlopen
 
 import streamlit as st
 from rdkit import Chem
-from rdkit.Chem import Draw
+
+try:
+    # Drawing is a presentation feature. Some hosted Python/RDKit combinations
+    # cannot load rdMolDraw2D, so keep it optional and preserve predictions.
+    from rdkit.Chem import Draw
+except ImportError:
+    Draw = None
 
 from molml.artifacts import build_model_bundle
 from molml.config import load_config
@@ -176,7 +182,10 @@ if run_prediction:
         mol = Chem.MolFromSmiles(smiles)
         result_cols = st.columns([0.8, 1.2], gap="large")
         with result_cols[0]:
-            st.image(Draw.MolToImage(mol, size=(420, 280)), width="stretch")
+            if Draw is not None:
+                st.image(Draw.MolToImage(mol, size=(420, 280)), width="stretch")
+            else:
+                st.info("La predicción funciona, pero este entorno no permite dibujar la estructura química.")
         with result_cols[1]:
             positive = prediction["prediction"] == 1
             if positive:
