@@ -43,10 +43,12 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-      .block-container {max-width: 1120px; padding-top: 2.2rem; padding-bottom: 3rem;}
-      .eyebrow {color:#168b9b; font-size:.78rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;}
+      .block-container {max-width: 1120px; padding-top: 3.4rem; padding-bottom: 3rem;}
       .hero {background:linear-gradient(120deg,#f1f8fb 0%,#f6fbfb 100%); border:1px solid #dce9ed;
-             border-radius:18px; padding:1.5rem 1.7rem; margin: .6rem 0 1.2rem 0;}
+             border-radius:18px; padding:1.7rem 1.9rem; margin: .35rem 0 1.35rem 0;}
+      .hero .eyebrow {color:#168b9b; font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:0 0 .7rem 0;}
+      .hero h1 {color:#17324d; font-size:2.35rem; line-height:1.15; margin:0 0 .65rem 0;}
+      .hero p {color:#42596b; font-size:1.04rem; line-height:1.6; margin:0; max-width:900px;}
       .muted {color:#586b78;}
       div[data-testid="stMetric"] {background:#f7fafb; border:1px solid #e1eaee; padding:14px 16px; border-radius:12px;}
       div.stButton > button {border-radius:10px; min-height:2.8rem; font-weight:650;}
@@ -105,11 +107,15 @@ def get_test_metrics(model_label: str) -> dict:
     return json.loads(metrics_path.read_text(encoding="utf-8"))["test"]
 
 
-st.markdown('<div class="eyebrow">Demo interactiva · aprendizaje automático molecular</div>', unsafe_allow_html=True)
-st.title("¿Qué patrón químico reconoce el modelo?")
 st.markdown(
-    "Esta demo explora si una molécula se parece a las que el conjunto BACE-1 clasifica "
-    "como inhibidoras. Es una primera estimación del modelo, no una prueba de unión a la proteína."
+    """
+    <section class="hero">
+      <div class="eyebrow">Demo interactiva · aprendizaje automático molecular</div>
+      <h1>¿Qué patrón químico reconoce el modelo?</h1>
+      <p>Esta demo explora si una molécula se parece a las que el conjunto BACE-1 clasifica como inhibidoras. Es una primera estimación del modelo, no una prueba de unión a la proteína.</p>
+    </section>
+    """,
+    unsafe_allow_html=True,
 )
 
 try:
