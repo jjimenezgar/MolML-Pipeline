@@ -9,7 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11"]
+        include:
+          - python-version: "3.10"
+            constraints: ""
+          - python-version: "3.11"
+            constraints: ""
+          - python-version: "3.12"
+            constraints: "-c requirements-benchmark.txt"
 
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +24,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
       - name: Install package
-        run: python -m pip install -e ".[dev,explain]"
+        run: python -m pip install ${{ matrix.constraints }} -e ".[dev,explain,tracking]"
       - name: Run unit tests
         run: pytest -q
       - name: Download official MoleculeNet BACE dataset
@@ -30,7 +36,7 @@ jobs:
             python -m molml.train --config "$config" > /dev/null
           done
       - name: Validate V1.1 domain on real BACE
-        run: python -m molml.v11 --config configs/rf_scaffold.yaml --output /tmp/molml-v11 > /dev/null
+        run: python -m molml.v11 --config configs/rf_scaffold.yaml --output /tmp/molml-v11 --mlflow-uri sqlite:////tmp/molml-ci.db > /dev/null
       - name: Validate V1.2 additivity on real BACE
         run: |
           python -m molml.explain --config configs/lr_scaffold.yaml --output /tmp/molml-v12-lr > /dev/null

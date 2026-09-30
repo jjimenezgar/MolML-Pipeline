@@ -13,14 +13,16 @@ Random splitting can place structurally related molecules in different partition
 Python 3.10+ and RDKit are required. A conda or mamba environment is recommended for RDKit.
 
 ```bash
-conda create -n molml python=3.11 -y
+conda create -n molml python=3.12 -y
 conda activate molml
-pip install -e ".[dev]"
+pip install -c requirements-benchmark.txt -e ".[dev,explain]"
 mkdir -p data/raw
 curl --fail --location https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv -o data/raw/bace.csv
 python -m pytest -q
 python -m molml.train --config configs/rf_scaffold.yaml --output results/v1/rf_scaffold
 ```
+
+The constraints file fixes the direct numerical and SHAP dependencies used for the published results. The original environment used Python 3.12.14. Other supported Python/dependency versions can pass the checks while producing slightly different metrics; the constraints are not a complete transitive lockfile.
 
 For the full comparison, run the same command with each of `configs/lr_random.yaml`, `configs/lr_scaffold.yaml`, `configs/rf_random.yaml`, and `configs/rf_scaffold.yaml`, setting `--output results/v1/<config-stem>`. Each directory contains `metrics.json` and test-set ROC, precision–recall and confusion-matrix PNGs. Metrics JSON includes full configuration, dataset SHA-256, package versions, class counts, partition sizes, unique-scaffold counts and pairwise scaffold overlap. Do not treat the raw CSV as a repository artifact; download it from the official dataset source above. The original `--data`, `--split` and `--model` CLI arguments remain available for older commands.
 
@@ -52,9 +54,17 @@ Scaffold split overlap is zero for every pair of partitions. The random split ha
 
 The random test results do not establish superior generalization to new chemical scaffolds. The single scaffold split is the primary V1 evaluation; no hyperparameter search or repeated test-set-driven model selection was performed. See [`results/v1`](results/v1) for unrounded machine-readable results, confusion matrices and plots.
 
-## Roadmap
+## Project status and purpose
 
-V1.1 may add applicability-domain analysis and MLflow after the V1 benchmark. Later stages may add explainability and deployment interfaces. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
+V1, V1.1 and V1.2 are implemented. The project demonstrates a reproducible molecular ML workflow: **SMILES → validation → Morgan fingerprints → fixed random/scaffold partitions → baseline training → evaluation → similarity diagnostics and model attribution**. It can support discussion of candidate prioritization, but prospective utility on new compounds has not been validated.
+
+| Stage | Delivered |
+| --- | --- |
+| V1 | Four fixed BACE experiments, leakage diagnostics, classification metrics and plots |
+| V1.1 | Training-only similarity-domain diagnostics, scaffold novelty and optional local MLflow tracking |
+| V1.2 | Checked SHAP attributions for eight fixed test molecules per scaffold model |
+
+Possible future work is repeated predeclared splits to measure partition variability, followed by saved-model inference for new SMILES. These are not part of V1.2. Interpretability scores or fingerprint bits must not be presented as experimentally established biological mechanisms.
 
 ## License
 

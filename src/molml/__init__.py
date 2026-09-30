@@ -1,3 +1,3 @@
 """MolML-Pipeline: reproducible molecular ML baselines."""
 
-__version__ = "0.1.0"
+__version__ = "1.2.0"
